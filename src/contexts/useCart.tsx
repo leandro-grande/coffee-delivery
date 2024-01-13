@@ -50,14 +50,8 @@ export const CartContextProvider = ({children}: CartProviderProps) => {
   const [carts, setCarts] = useState<Cart[]>([]);
   const [orderDelivery, setOrderDelivery] = useState({} as OrderDelivery);
 
-  useEffect(() => {
-
-    setProducts(productsData);
-  }, [])
-
 
   const addOrder = (cartItem: Cart) => {
-
     if (!cartItem.amount) {
       return
     }
@@ -94,6 +88,11 @@ export const CartContextProvider = ({children}: CartProviderProps) => {
   const sendDelivery = (data: OrderDelivery) => {
     setOrderDelivery(data);
   }
+
+  useEffect(() => {
+
+    setProducts(productsData);
+  }, []);
 
   return (
     <CartContext.Provider value={{ 

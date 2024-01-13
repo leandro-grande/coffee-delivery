@@ -54,6 +54,4 @@ const OrderConfirmed = () => {
   );
 }
 
-
-
 export default OrderConfirmed;

@@ -86,3 +86,12 @@ export const SelectedCoffees = styled.div`
   }
 `;
 
+export const FormError = styled.span`
+  display: block;
+  margin-top: 1rem;
+
+  font-size: 14px;
+  color: ${({theme}) => theme['-orange-700']};
+
+`;
+

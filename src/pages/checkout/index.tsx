@@ -11,13 +11,15 @@ import { OrderButton } from "./components/OrderButton";
 import { PaymentMethodOptions } from './components/PaymentMethodOptions';
 import { SectionTitle } from './components/SectionTitle';
 
+import { formErrorMapper } from '../../utils/formErrorMapper';
 import {
   CompleteOrderContainer,
+  FormError,
   OrderContent, OrderDeliverySection, SelectedCoffees,
   SelectedCoffeesContent
 } from "./styles";
 
-enum PaymentMethods {
+export enum PaymentMethods {
   credit = "credit",
   debit = "debit",
   money = "money",
@@ -25,25 +27,31 @@ enum PaymentMethods {
 
 const orderFormValidationSchema = zod.object({
   cep: zod.string().min(8, "Informe o CEP"),
-  street: zod.string().min(1),
-  number: zod.string().min(1),
-  complement: zod.string().min(1),
-  district: zod.string().min(1),
-  city: zod.string().min(1),
-  uf: zod.string().min(1),
-  payment: zod.nativeEnum(PaymentMethods),
+  street: zod.string().min(1, 'Informe o endereço'),
+  number: zod.string().min(1, 'Informe o número'),
+  complement: zod.string().min(1, 'Informe o complemento'),
+  district: zod.string().min(1, 'Informe o bairro'),
+  city: zod.string().min(1, 'Informe a cidade'),
+  uf: zod.string().min(1, 'Informe o UF'),
+  payment: zod.nativeEnum(PaymentMethods, {
+    errorMap: (issue, ctx) => {
+      return {message: 'Informe a opção de pagamento'};
+    },
+  })
 })
 
 type OrderFormData = zod.infer<typeof orderFormValidationSchema>
 
 const Checkout = () => {
-  const { carts, sendDelivery, orderDelivery } = useCart();
+  const { carts, sendDelivery } = useCart();
+
   const OrderForm = useForm<OrderFormData>({
     resolver: zodResolver(orderFormValidationSchema)
   });
-  const { handleSubmit } = OrderForm;
 
-  const delivery = 3.50;
+  const { handleSubmit, formState: { errors } } = OrderForm;
+
+  const deliveryPrice = 3.50;
 
   const totalCoffee = carts.reduce((acc, transaction) => {
     const value = transaction.amount * transaction.product.price
@@ -53,7 +61,7 @@ const Checkout = () => {
     return acc;
   }, 0);
 
-  const total = totalCoffee + delivery;
+  const total = totalCoffee + deliveryPrice;
 
   const handleSendOrder = (data: OrderFormData) => {
     sendDelivery(data);
@@ -75,6 +83,10 @@ const Checkout = () => {
             />  
           
             <FormDelivery />
+            
+            {formErrorMapper(errors) && <FormError>* {formErrorMapper(errors)}</FormError> }
+            
+            
           </OrderDeliverySection>
 
           <OrderDeliverySection>
@@ -87,8 +99,6 @@ const Checkout = () => {
             <PaymentMethodOptions />
 
           </OrderDeliverySection>
-
-          
         </OrderContent>
         
         <SelectedCoffeesContent>
@@ -108,7 +118,7 @@ const Checkout = () => {
               
               <div className="right">
                 <span>R$ {totalCoffee.toFixed(2)}</span>
-                <span>R$ {delivery.toFixed(2)}</span>
+                <span>R$ {deliveryPrice.toFixed(2)}</span>
                 <strong>R$ {total.toFixed(2)}</strong>
               </div>
             </div>
