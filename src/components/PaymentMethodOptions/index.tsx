@@ -3,7 +3,7 @@ import { Bank, CreditCard, Money } from "phosphor-react";
 import { PaymentMethodInput } from "./PaymentMethodInput";
 import { PaymentMethodContainer } from "./styles";
 
-export const paymentMethods = {
+export const  paymentMethods = {
   credit: {
     label: 'Cartão de Credito',
     icon: <CreditCard size={16} />
@@ -20,7 +20,6 @@ export const paymentMethods = {
 
 export const PaymentMethodOptions = () => {
   
-;
   return (
     <PaymentMethodContainer>
       {Object.entries(paymentMethods).map(([key, {label, icon}]) => (  // Map de Objetos

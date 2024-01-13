@@ -43,6 +43,7 @@ type CartContextData = {
   updateOrder: (productId: string, amount: number) => void;
   removeOrder: (productId: string) => void;
   sendDelivery: (data: OrderDelivery) => void;
+  removeCart: () => void;
 }
 
 export const CartContextProvider = ({children}: CartProviderProps) => {
@@ -89,6 +90,10 @@ export const CartContextProvider = ({children}: CartProviderProps) => {
     setOrderDelivery(data);
   }
 
+  const removeCart = () => {
+    setCarts([]);
+  }
+
   useEffect(() => {
 
     setProducts(productsData);
@@ -101,7 +106,8 @@ export const CartContextProvider = ({children}: CartProviderProps) => {
       orderDelivery, 
       addOrder, removeOrder, 
       updateOrder, 
-      sendDelivery 
+      sendDelivery ,
+      removeCart
     }}>
       
       {children}

@@ -55,7 +55,7 @@ export const CoffeeCard = ({ product }: CoffeeCardProps) => {
             type="button"
             onClick={handleRemoveToCard}
           >
-            
+             
             <Minus size={14}  weight="fill" />
             </button>
 

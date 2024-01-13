@@ -1,5 +1,5 @@
 import { Minus, Plus, Trash } from "phosphor-react";
-import { useCart } from "../../../../contexts/useCart";
+import { useCart } from "../../contexts/useCart";
 import { AddToCart, Container, RemoveCoffeeButton } from "./styles";
 
 type Product = {

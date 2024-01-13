@@ -2,9 +2,9 @@ import { Clock, CurrencyDollar, MapPin } from "phosphor-react";
 
 import { InfoWithIcon } from "../../components/InfoWithIcon";
 import { useCart } from "../../contexts/useCart";
-import { paymentMethods } from "../checkout/components/PaymentMethodOptions";
 
-import { Container, OrderDetailsContainer } from "./styles";
+import { paymentMethods } from "../../components/PaymentMethodOptions";
+import { Container, OrderDetailsContainer } from "../../styles/orderConfirmed";
 
 const OrderConfirmed = () => {
   const { orderDelivery } = useCart();
@@ -40,10 +40,11 @@ const OrderConfirmed = () => {
             icon={<CurrencyDollar weight="fill" />} 
             iconBg="orange" 
             text={
-              <span>
-                Pagamento na entrega 
-                <br /><strong>{paymentMethods[orderDelivery.payment].label}</strong>
-              </span>}           
+                    <span>
+                       Pagamento na entrega 
+                       <br /><strong>{paymentMethods[orderDelivery.payment]?.label}</strong>
+                    </span>
+                  }           
             />
 
         </OrderDetailsContainer>  

@@ -4,20 +4,20 @@ import { CurrencyDollar, MapPin } from "phosphor-react";
 import { FormProvider, useForm } from "react-hook-form";
 import * as zod from 'zod';
 
+import { CoffeeOrder } from "../../components/CoffeeOrder";
+import { FormDelivery } from "../../components/FormDelivery";
+import { OrderButton } from "../../components/OrderButton";
+import { PaymentMethodOptions } from '../../components/PaymentMethodOptions';
+import { SectionTitle } from '../../components/SectionTitle';
 import { useCart } from "../../contexts/useCart";
-import { CoffeeOrder } from "./components/CoffeeOrder";
-import { FormDelivery } from "./components/FormDelivery";
-import { OrderButton } from "./components/OrderButton";
-import { PaymentMethodOptions } from './components/PaymentMethodOptions';
-import { SectionTitle } from './components/SectionTitle';
 
-import { formErrorMapper } from '../../utils/formErrorMapper';
 import {
   CompleteOrderContainer,
   FormError,
   OrderContent, OrderDeliverySection, SelectedCoffees,
   SelectedCoffeesContent
-} from "./styles";
+} from "../../styles/checkout";
+import { formErrorMapper } from '../../utils/formErrorMapper';
 
 export enum PaymentMethods {
   credit = "credit",
@@ -43,7 +43,7 @@ const orderFormValidationSchema = zod.object({
 type OrderFormData = zod.infer<typeof orderFormValidationSchema>
 
 const Checkout = () => {
-  const { carts, sendDelivery } = useCart();
+  const { carts, sendDelivery, removeCart } = useCart();
 
   const OrderForm = useForm<OrderFormData>({
     resolver: zodResolver(orderFormValidationSchema)
@@ -65,8 +65,9 @@ const Checkout = () => {
 
   const handleSendOrder = (data: OrderFormData) => {
     sendDelivery(data);
-
-    Router.push('/orderConfirmed');
+    Router.push('/order-confirmed');
+    
+    removeCart();
   }
 
   return (
@@ -134,4 +135,4 @@ const Checkout = () => {
   );
 }
 
-export default Checkout;
+export default Checkout
